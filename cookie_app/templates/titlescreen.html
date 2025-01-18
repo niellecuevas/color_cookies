@@ -1,0 +1,18 @@
+{% extends 'home.html' %}
+{% load static %} 
+
+{% block title %}Color Cookies{% endblock %}
+
+{% block content %}
+<!-- Container for the centered image -->
+<div class="title-screen">
+    <img src="{% static 'images/backgrounds/colorcookies.png' %}" alt="Color Cookies" class="centered-image">
+
+    <!-- Stack of buttons -->
+    <div class="button-container">
+        <a href="{% url 'start' %}" class="button" id="startButton">Start</a>
+        <a href="{% url 'instructions' %}" class="button">Instructions</a>
+        <a href="{% url 'about' %}" class="button">About</a>
+    </div>
+</div>
+{% endblock %}

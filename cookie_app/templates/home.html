@@ -1,0 +1,22 @@
+{% load static %} 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Color Cookies{% endblock %}</title>
+    <link rel="icon" href="{% static 'images/crunched_cookies/cookiecrunch1.png' %}"  type="image/png" sizes="64x64">
+    <!-- Link to external CSS file -->
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+</head>
+<body>
+    <div class="content">
+        <!-- Cookie image overlay -->
+        <div class="cookie-overlay"></div>
+
+        {% block content %}
+        
+        {% endblock %}
+    </div>
+</body>
+</html>

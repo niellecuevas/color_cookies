@@ -1,0 +1,186 @@
+@font-face {
+  font-family: 'CuteDino';
+  src: url('/static/fonts/cutedino.ttf') format('truetype');
+}
+
+body {
+    margin: 0;
+    font-family: 'CuteDino', Arial, Helvetica, sans-serif;
+    background-image: url("/static/images/backgrounds/mainbg.png");
+    background-color: #F9E0BB;
+    background-size: repeat;
+    background-attachment: fixed;
+    background-position: center;
+    height: 100%; 
+}
+
+.content {
+    margin: 50px auto;
+    padding: 20px;
+    max-width: 800px; /* Set the width of the content box */
+    background: rgba(255, 255, 255, 0.8);
+    border: 5px solid #a46a15; /* Border color */
+    border-radius: 15px; /* Rounded edges */
+    position: relative; /* To position the cookie image */
+    overflow: visible; 
+}
+
+/* Content inside the fixed content box will adjust */
+.content-box .content {
+    padding: 20px;
+    overflow-y: auto; /* Make the content inside scrollable if necessary */
+    max-height: calc(100% - 40px); /* Adjust to fit padding */
+}
+
+/* Cookie design (cookie image overlay on the top-left corner) */
+.cookie-overlay {
+    position: absolute;
+    top: -20px; /* Adjust to position the cookie */
+    left: -23px; /* Adjust to position the cookie */
+    width: 50px; /* Width of the cookie image */
+    height: 50px; /* Height of the cookie image */
+    background-image: url("/static/images/crunched_cookies/cookiecrunch1.png"); 
+    background-size: cover;
+    background-position: center;
+    transform: rotate(60deg); /* Rotate the cookie image 90 degrees */
+}
+
+h1 {
+    font-size: 24px;
+    color: #333;
+}
+
+/*  Title Screen CSS */
+.title-screen {
+    display: flex;
+    flex-direction: column; /* Stack elements vertically */
+    justify-content: flex-start; /* Center the content horizontally */
+    align-items: center; /* Center the content vertically */
+    background-color: #f8f8f8; /* Optional background color */
+    padding-top: 10px; /* Optional padding from the top */
+}
+
+.centered-image {
+    width: 50%; /* Adjust the width to make the image smaller (50% of the viewport width) */
+    max-width: 300px; /* Ensure the image doesn't get too large */
+    margin-top: 20px; /* Add space above the image (optional) */
+    margin-bottom: 70px;
+}
+
+.button-container {
+    display: flex;
+    flex-direction: column; /* Stack buttons vertically */
+    gap: 15px; /* Space between buttons */
+    margin-bottom: 20px;
+}
+
+.button {
+    padding: 12px 24px; /* Adjust the button padding */
+    background-color: #a46a15; /* Set the background color */
+    color: white; /* Set text color */
+    text-align: center; /* Center the text inside the button */
+    text-decoration: none; /* Remove underline */
+    border-radius: 5px; /* Rounded corners */
+    font-size: 16px; /* Adjust font size */
+    width: 200px; /* Fixed width for the buttons */
+    transition: background-color 0.3s ease; /* Smooth transition effect */
+    letter-spacing: 2px;
+    border-radius: 50px;
+}
+
+.button:hover {
+    background-color: #9e5712; /* Darker shade on hover */
+}
+
+/* In-Game Design */
+
+#gameContainer {
+    width: 80%;
+    margin: 0 auto;
+    text-align: center;
+  }
+  
+  #questionText {
+    font-size: 2em;
+    margin-bottom: 20px;
+    font-family: 'CuteDino'
+  }
+  
+  /* Basic styling for cookie container */
+  #cookieContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
+    box-sizing: border-box;
+    max-width: 100%; /* Ensures the container can grow based on content */
+    margin: 0 auto; /* Centers the container */
+    width: auto;
+  }
+  
+  .cookie {
+    width: 60px;
+    height: 60px;
+    cursor: pointer;
+  }
+  
+  #lives {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    display: flex;
+    gap: 5px;
+  }
+  
+  .life {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background-color: gray;
+  }
+  
+  #gameOverMessage {
+    margin-top: 20px;
+  }
+  
+  #retryButton {
+    padding: 10px 20px;
+    font-size: 1.2em;
+    cursor: pointer;
+  }
+
+    /* Media Queries for responsiveness */
+    @media (max-width: 1024px) {
+      #cookieContainer {
+        gap: 15px;
+      }
+  
+      #cookieContainer img {
+        width: 90px; /* Slightly smaller size for tablets */
+        height: 90px;
+      }
+    }
+  
+    @media (max-width: 768px) {
+      #cookieContainer {
+        gap: 10px;
+      }
+  
+      #cookieContainer img {
+        width: 80px; /* Smaller size for smaller devices */
+        height: 80px;
+      }
+    }
+  
+    @media (max-width: 480px) {
+      #cookieContainer {
+        gap: 5px;
+      }
+  
+      #cookieContainer img {
+        width: 70px; /* Even smaller size for very small devices */
+        height: 70px;
+      }
+    }
+  
