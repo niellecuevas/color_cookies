@@ -1,0 +1,15 @@
+{% extends 'home.html' %}
+{% load static %} 
+
+{% block title %}Color Cookies{% endblock %}
+
+{% block content %}
+<a href="{% url 'titlescreen' %}" class="back-button">
+    <img src="{% static 'images/backgrounds/arrow.png' %}" alt="Back to Title Screen">
+  </a>
+
+<div class="title-screen">
+    <img src="{% static 'images/backgrounds/colorcookies.png' %}" alt="Color Cookies" class="centered-image">
+
+</div>
+{% endblock %}

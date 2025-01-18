@@ -12,6 +12,8 @@ body {
     background-attachment: fixed;
     background-position: center;
     height: 100%; 
+    opacity: 1;
+    transition: opacity 0.5s ease-in-out;  /* Fade in/out effect */
 }
 
 .content {
@@ -48,6 +50,29 @@ body {
 h1 {
     font-size: 24px;
     color: #333;
+}
+
+/* Back button styling */
+.back-button {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 10;
+}
+
+.back-button img {
+  width: 50px; /* Adjust the size of the arrow image */
+  height: auto;
+}
+
+/* Scale down effect on hover */
+.back-button:hover img {
+  transform: scale(0.9);  /* Zoom out a little when hovered */
+}
+
+/* Scale down effect when clicked */
+.back-button:active img {
+  transform: scale(0.85);  /* Zoom out more when clicked */
 }
 
 /*  Title Screen CSS */
@@ -89,6 +114,7 @@ h1 {
 }
 
 .button:hover {
+    transform: scale(1.1); 
     background-color: #9e5712; /* Darker shade on hover */
 }
 
@@ -123,6 +149,12 @@ h1 {
     width: 60px;
     height: 60px;
     cursor: pointer;
+    transition: transform 0.2s ease; 
+  }
+
+  /* Zoom-out effect */
+  .cookie.zoom-out {
+    transform: scale(0.8);  /* Scale the image down to 80% */
   }
   
   #lives {
@@ -183,4 +215,35 @@ h1 {
         height: 70px;
       }
     }
-  
+
+    /* Rotating animation */
+@keyframes rotateImage {
+  0% {
+      transform: rotate(0deg);
+  }
+  100% {
+      transform: rotate(360deg);
+  }
+}
+
+/* Apply the animation to the image */
+.rotate-image {
+  animation: rotateImage 20s linear infinite;
+}
+
+/* Apply DinoCute font and change the button color */
+.custom-confirm-button {
+  background-color: #a46a15 !important;  /* Change button color to brown */
+  color: white !important;  /* Text color to white */
+  font-family: 'CuteDino', sans-serif !important;  /* Apply the DinoCute font */
+  padding: 10px 20px !important;  /* Add some padding to the button */
+  border-radius: 5px !important;  /* Rounded corners */
+  font-size: 16px !important;  /* Adjust the font size */
+  border: none !important;  /* Remove default border */
+}
+
+.custom-confirm-button:hover {
+  background-color: darkbrown !important;  /* Darken button color on hover */
+  cursor: pointer;
+  transform: scale(1.1);
+}
