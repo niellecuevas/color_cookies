@@ -1,98 +1,228 @@
 const cookieColors = [
-    { color: 'red', img: '{% static "images/cookies/cookiered.png" %}' },
-    { color: 'blue', img: '{% static "images/cookies/cookieblue.png" %}' },
-    { color: 'green', img: '{% static "images/cookies/cookiegreen.png" %}' },
-    { color: 'yellow', img: '{% static "images/cookies/cookieyellow.png" %}' },
-    { color: 'pink', img: '{% static "images/cookies/cookiepink.png" %}' },
-    { color: 'orange', img: '{% static "images/cookies/cookieorange.png" %}' },
-    { color: 'brown', img: '{% static "images/cookies/cookiebrown.png" %}' },
-    { color: 'black', img: '{% static "images/cookies/cookieblack.png" %}' }
+  { color: 'red', img: window.staticPaths.cookieRed },
+  { color: 'blue', img: window.staticPaths.cookieBlue },
+  { color: 'green', img: window.staticPaths.cookieGreen },
+  { color: 'yellow', img: window.staticPaths.cookieYellow },
+  { color: 'pink', img: window.staticPaths.cookiePink },
+  { color: 'orange', img: window.staticPaths.cookieOrange },
+  { color: 'brown', img: window.staticPaths.cookieBrown },
+  { color: 'black', img: window.staticPaths.cookieBlack }
 ];
 
+const backgroundMusic = new Audio(window.staticPaths.frozenWinter);
+backgroundMusic.loop = true;
+window.onload = function() {
+  backgroundMusic.play();
+};
+
+document.addEventListener('visibilitychange', function() {
+  if (document.hidden) {
+      backgroundMusic.pause();
+  } else {
+      backgroundMusic.play();
+  }
+});
+
+const correctSound = new Audio(window.staticPaths.correctSound);
+correctSound.volume = 0.1;
+const wrongSound = new Audio(window.staticPaths.wrongSound);
+wrongSound.volume = 0.5;
+const gameoverSound = new Audio(window.staticPaths.gameOverSound);
+gameoverSound.volume = 0.1;
+
 let lives = 5;
+let score = 0;
 let correctColor;
+let timer;
+let remainingTime = 10; // Fixed to 10 seconds for level 1
+let numCookies = 3;
+let level = 1; // Start from level 1
+let timerInterval = 1000; // Starting interval of 1 second
+let gameInProgress = false;
 
 const questionText = document.getElementById('questionText');
 const cookieContainer = document.getElementById('cookieContainer');
 const lifeCircles = document.querySelectorAll('.life');
-const retryButton = document.getElementById('retryButton');
-const gameOverMessage = document.getElementById('gameOverMessage');
+const scoreDisplay = document.getElementById('score');
+const timerDisplay = document.getElementById('timer');
+const countdownModal = document.getElementById('countdownModal');
+const countdownText = document.getElementById('countdownText');
 
-// Start new game
 function startGame() {
   lives = 5;
-  gameOverMessage.style.display = 'none';
-  generateNewQuestion();
+  score = 0;
+  level = 1;
+  numCookies = 3;
+  timerInterval = 1000; // Starting timer speed
+  gameInProgress = true;
+  updateScore();
   updateLives();
+  countdown();
 }
 
-// Update lives display
 function updateLives() {
   lifeCircles.forEach((circle, index) => {
-    circle.style.backgroundColor = index < lives ? 'green' : 'gray';
+      circle.style.backgroundColor = index < lives ? 'green' : 'gray';
   });
 }
 
-// Generate new random question
-function generateNewQuestion() {
-  const randomColorIndex = Math.floor(Math.random() * cookieColors.length);
-  const randomCookieColor = cookieColors[randomColorIndex];
-  
-  correctColor = randomCookieColor.color;
+function updateScore() {
+  scoreDisplay.textContent = score;
+}
 
-  // Randomize text and its color
-  const randomTextColorIndex = Math.floor(Math.random() * cookieColors.length);
-  const randomTextColor = cookieColors[randomTextColorIndex].color;
+function countdown() {
+  let countdownValue = 3;
+  countdownModal.style.display = 'flex'; // Show countdown modal
+  const countdownTimer = setInterval(() => {
+      countdownText.textContent = countdownValue;
+      countdownValue--;
+      if (countdownValue < 0) {
+          clearInterval(countdownTimer);
+          countdownModal.style.display = 'none'; // Hide countdown modal
+          gameStart();
+      }
+  }, 500);
+}
 
-  questionText.innerHTML = `Color ${correctColor}`;
-  questionText.style.color = randomTextColor;
+function gameStart() {
+  generateNewQuestion();
+  startTimer();
+  document.getElementById('gameContainer').style.zIndex = 1; // Keep game content visible
+}
 
-  // Randomize cookie options
-  const shuffledColors = shuffleArray(cookieColors);
-  const cookies = cookieContainer.getElementsByClassName('cookie');
-  
-  for (let i = 0; i < cookies.length; i++) {
-    cookies[i].setAttribute('data-color', shuffledColors[i].color);
-    cookies[i].src = shuffledColors[i].img;
+function startTimer() {
+  remainingTime = 10; // Always reset to 10 seconds at the start of each question
+  timerDisplay.textContent = remainingTime;
+  if (timer) {
+      clearInterval(timer);
+  }
+  timer = setInterval(function() {
+      remainingTime--;
+      timerDisplay.textContent = remainingTime;
+      if (remainingTime <= 0) {
+          clearInterval(timer);
+          loseLife(); // If time runs out, the player loses a life
+      }
+  }, timerInterval);
+}
+
+function loseLife() {
+  lives--;
+  updateLives();
+  if (lives === 0) {
+      gameoverSound.play();
+      gameOver();
+  } else {
+      generateNewQuestion();
+      startTimer();
   }
 }
 
-// Shuffle array (Fisher-Yates algorithm)
+function generateNewQuestion() {
+  const randomTextIndex = Math.floor(Math.random() * cookieColors.length);
+  const randomTextColorIndex = Math.floor(Math.random() * cookieColors.length);
+
+  const randomText = cookieColors[randomTextIndex].color;
+  const randomTextColor = cookieColors[randomTextColorIndex].color;
+
+  correctColor = randomTextColor;
+
+  const capitalizedText = randomText.charAt(0).toUpperCase() + randomText.slice(1);
+  questionText.innerHTML = `${capitalizedText}`;
+  questionText.style.color = randomTextColor;
+
+  const options = [cookieColors[randomTextColorIndex]];
+
+  while (options.length < numCookies) {
+      const randomColor = cookieColors[Math.floor(Math.random() * cookieColors.length)];
+      if (!options.includes(randomColor)) {
+          options.push(randomColor);
+      }
+  }
+
+  const shuffledOptions = shuffleArray(options);
+  cookieContainer.innerHTML = '';
+  shuffledOptions.forEach(cookie => {
+      const img = document.createElement('img');
+      img.src = cookie.img;
+      img.setAttribute('data-color', cookie.color);
+      img.classList.add('cookie');
+      cookieContainer.appendChild(img);
+  });
+}
+
 function shuffleArray(array) {
   let shuffledArray = [...array];
   for (let i = shuffledArray.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
   }
   return shuffledArray;
 }
 
-// Handle cookie click event
+function shakeGameContainer() {
+  gameContainer.classList.add('shake');
+  setTimeout(() => {
+      gameContainer.classList.remove('shake');
+  }, 1000); // Shake duration
+}
+
 cookieContainer.addEventListener('click', function(event) {
   if (event.target.classList.contains('cookie')) {
-    const clickedColor = event.target.getAttribute('data-color');
-    if (clickedColor === correctColor) {
-      alert('Correct!');
-      generateNewQuestion();
-    } else {
-      lives--;
-      updateLives();
-      if (lives === 0) {
-        gameOver();
+      const clickedCookie = event.target;
+      clickedCookie.classList.add('zoom-out');
+      setTimeout(function() {
+          clickedCookie.classList.remove('zoom-out');
+      }, 200);
+
+      const clickedColor = event.target.getAttribute('data-color');
+      if (clickedColor === correctColor) {
+          correctSound.play();
+          score++;
+          updateScore();
+          clearInterval(timer);
+          generateNewQuestion();
+          startTimer();
+
+          // Increase difficulty every few rounds (optional)
+          if (score % 5 === 0 && numCookies < 8) {
+              numCookies++;
+              level++; // Increase level
+              timerInterval = Math.max(500, timerInterval - 100); // Speed up the timer as the level increases
+          }
+      } else {
+          wrongSound.play();
+          loseLife();
+          shakeGameContainer();
       }
-    }
   }
 });
 
-// Handle game over
 function gameOver() {
-  gameOverMessage.style.display = 'block';
+  Swal.fire({
+      title: 'Game Over!',
+      html: `Score: ${score}.<br>You lost all your lives.`,
+      imageUrl: window.staticPaths.gameOverImage,
+      imageWidth: 100,
+      imageHeight: 100,
+      imageAlt: 'Game Over Icon',
+      confirmButtonText: 'Try Again',
+      customClass: {
+          confirmButton: 'custom-confirm-button',
+      },
+      allowOutsideClick: () => {
+          startGame();
+          return true;
+      },
+      didOpen: () => {
+          const image = Swal.getImage();
+          image.classList.add('rotate-image');
+      }
+  }).then((result) => {
+      if (result.isConfirmed) {
+          startGame(); // Restart the game and reset everything
+      }
+  });
 }
 
-// Retry button to restart the game
-retryButton.addEventListener('click', function() {
-  startGame();
-});
-
-// Start the game when the page loads
 startGame();

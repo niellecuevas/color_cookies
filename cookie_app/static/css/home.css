@@ -156,11 +156,23 @@ h1 {
   .cookie.zoom-out {
     transform: scale(0.8);  /* Scale the image down to 80% */
   }
+
+  /* Score Section */
+  #scoreContainer {
+    margin-bottom: 20px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+  }
+
+  .score {
+    color: #007bff; /* Blue color for the score */
+  }
   
   #lives {
     position: absolute;
     top: 10px;
-    left: 10px;
+    right: 10px;
     display: flex;
     gap: 5px;
   }
@@ -246,4 +258,45 @@ h1 {
   background-color: darkbrown !important;  /* Darken button color on hover */
   cursor: pointer;
   transform: scale(1.1);
+}
+
+/* Vibration shake effect */
+.shake {
+  animation: shakeAnimation 0.5s ease-in-out;
+}
+
+@keyframes shakeAnimation {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-10px); }
+  50% { transform: translateX(10px); }
+  75% { transform: translateX(-10px); }
+  100% { transform: translateX(0); }
+}
+/* Modal style */
+.modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  z-index: 9999; /* Modal on top */
+}
+
+.modal-content {
+  background-color: rgba(255, 255, 255, 0.8); /* Slight transparency */
+  padding: 50px;
+  border-radius: 10px;
+  text-align: center;
+  font-size: 50px;
+  color: #333;
+}
+
+/* Game content (always visible) */
+#gameContainer {
+  position: relative;
+  z-index: 1; /* Behind the modal */
 }

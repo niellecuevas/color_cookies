@@ -9,172 +9,64 @@
     <!-- SweetAlert2 JS -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.min.js"></script>
 
-<div id="gameContainer">
-    <div id="lives">
-      <div class="life" id="life1"></div>
-      <div class="life" id="life2"></div>
-      <div class="life" id="life3"></div>
-      <div class="life" id="life4"></div>
-      <div class="life" id="life5"></div>
+    <script>
+        window.staticPaths = {
+            cookieRed: "{% static 'images/cookies/cookiered.png' %}",
+            cookieBlue: "{% static 'images/cookies/cookieblue.png' %}",
+            cookieGreen: "{% static 'images/cookies/cookiegreen.png' %}",
+            cookieYellow: "{% static 'images/cookies/cookieyellow.png' %}",
+            cookiePink: "{% static 'images/cookies/cookiepink.png' %}",
+            cookieOrange: "{% static 'images/cookies/cookieorange.png' %}",
+            cookieBrown: "{% static 'images/cookies/cookiebrown.png' %}",
+            cookieBlack: "{% static 'images/cookies/cookieblack.png' %}",
+            frozenWinter: "{% static 'sounds/frozen_winter.mp3' %}",
+            correctSound: "{% static 'sounds/correct.mp3' %}",
+            wrongSound: "{% static 'sounds/wrong.wav' %}",
+            gameOverSound: "{% static 'sounds/gameover.mp3' %}",
+            gameOverImage: "{% static 'images/backgrounds/gameovercookie.png' %}",
+        };
+    </script>
+    
+    <a href="{% url 'titlescreen' %}" class="back-button">
+        <img src="{% static 'images/backgrounds/arrow.png' %}" alt="Back to Title Screen">
+    </a>
+
+    <!-- Game Content (Always visible) -->
+    <div id="gameContainer">
+        <!-- Lives -->
+        <div id="lives">
+            <div class="life" id="life1"></div>
+            <div class="life" id="life2"></div>
+            <div class="life" id="life3"></div>
+            <div class="life" id="life4"></div>
+            <div class="life" id="life5"></div>
+        </div>
+
+        <!-- Score -->
+        <div id="scoreContainer">
+            <p>Score: <span id="score">0</span></p>
+        </div>
+
+        <!-- Timer -->
+        <div id="timerContainer">
+            <p>Time Left: <span id="timer">10</span> seconds</p>
+        </div>
+
+        <!-- Question -->
+        <div id="questionContainer">
+            <p id="questionText"></p>
+        </div>
+
+        <!-- Cookies Options -->
+        <div id="cookieContainer"></div>
     </div>
 
-    <div id="questionContainer">
-      <p id="questionText"></p>
+    <!-- Countdown Modal (Initially visible) -->
+    <div id="countdownModal" class="modal">
+        <div class="modal-content">
+            <h1 id="countdownText">3</h1>
+        </div>
     </div>
 
-    <div id="cookieContainer"></div>
-</div>
-
-<script>
-    const cookieColors = [
-        { color: 'red', img: "{% static 'images/cookies/cookiered.png' %}" },
-        { color: 'blue', img: "{% static 'images/cookies/cookieblue.png' %}" },
-        { color: 'green', img: "{% static 'images/cookies/cookiegreen.png' %}" },
-        { color: 'yellow', img: "{% static 'images/cookies/cookieyellow.png' %}" },
-        { color: 'pink', img: "{% static 'images/cookies/cookiepink.png' %}" },
-        { color: 'orange', img: "{% static 'images/cookies/cookieorange.png' %}" },
-        { color: 'brown', img: "{% static 'images/cookies/cookiebrown.png' %}" },
-        { color: 'black', img: "{% static 'images/cookies/cookieblack.png' %}" }
-    ];
-
-    // Load the background music
-    const backgroundMusic = new Audio("{% static 'sounds/frozen_winter.mp3' %}");
-    backgroundMusic.loop = true;  // Loop the background music
-
-    // Play the background music when the page loads
-    window.onload = function() {
-        backgroundMusic.play();
-    };
-
-    // Add event listener for visibility change to pause/resume music
-    document.addEventListener('visibilitychange', function() {
-        if (document.hidden) {
-            backgroundMusic.pause();  // Pause music when the tab is not active
-        } else {
-            backgroundMusic.play();   // Resume music when the tab becomes active
-        }
-    });
-
-    // Load sound effect
-    const correctSound = new Audio("{% static 'sounds/correct.mp3' %}");
-    correctSound.volume = 0.1; 
-    const wrongSound = new Audio("{% static 'sounds/wrong.wav' %}");
-    wrongSound.volume = 0.5; 
-    const gameoverSound = new Audio("{% static 'sounds/gameover.mp3' %}");
-    gameoverSound.volume = 0.1;
-
-    let lives = 5;
-    let correctColor;
-
-    const questionText = document.getElementById('questionText');
-    const cookieContainer = document.getElementById('cookieContainer');
-    const lifeCircles = document.querySelectorAll('.life');
-
-    function startGame() {
-        lives = 5;
-        generateNewQuestion();
-        updateLives();
-    }
-
-    function updateLives() {
-        lifeCircles.forEach((circle, index) => {
-            circle.style.backgroundColor = index < lives ? 'green' : 'gray';
-        });
-    }
-
-    function generateNewQuestion() {
-        // Pick a random text to display and a random color for the text
-        const randomTextIndex = Math.floor(Math.random() * cookieColors.length);
-        const randomTextColorIndex = Math.floor(Math.random() * cookieColors.length);
-
-        const randomText = cookieColors[randomTextIndex].color; // Text content
-        const randomTextColor = cookieColors[randomTextColorIndex].color; // Font color
-
-        // Set the correct answer to the font color
-        correctColor = randomTextColor;
-
-        // Capitalize the first letter of the text content
-        const capitalizedText = randomText.charAt(0).toUpperCase() + randomText.slice(1);
-
-        // Display the question
-        questionText.innerHTML = `${capitalizedText}`;
-        questionText.style.color = randomTextColor;
-
-        // Shuffle cookies and display the options
-        const shuffledColors = shuffleArray(cookieColors);
-        cookieContainer.innerHTML = '';
-
-        shuffledColors.forEach(cookie => {
-            const img = document.createElement('img');
-            img.src = cookie.img;
-            img.setAttribute('data-color', cookie.color); // Actual color of the cookie
-            img.classList.add('cookie');
-            cookieContainer.appendChild(img);
-        });
-    }
-
-    function shuffleArray(array) {
-        let shuffledArray = [...array];
-        for (let i = shuffledArray.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
-        }
-        return shuffledArray;
-    }
-
-    cookieContainer.addEventListener('click', function(event) {
-        if (event.target.classList.contains('cookie')) {
-            
-            const clickedCookie = event.target;
-            clickedCookie.classList.add('zoom-out');
-            setTimeout(function() {
-                clickedCookie.classList.remove('zoom-out'); 
-            }, 200);  
-
-            const clickedColor = event.target.getAttribute('data-color');
-            // Compare clicked color with the correct font color
-            if (clickedColor === correctColor) {
-                correctSound.play();
-                generateNewQuestion();
-            } else {
-                wrongSound.play();
-                lives--;
-                updateLives();
-                if (lives === 0) {
-                    gameoverSound.play();
-                    gameOver(); // Trigger the game over with SweetAlert
-                }
-            }
-        }
-    });
-
-    function gameOver() {
-        Swal.fire({
-            title: 'Game Over!',
-            text: 'You lost all your lives.',
-            imageUrl: "{% static 'images/backgrounds/gameovercookie.png' %}",  // Path to your custom image
-            imageWidth: 100,  // Adjust the size
-            imageHeight: 100,  // Adjust the size
-            imageAlt: 'Game Over Icon',  // Alt text for the image
-            confirmButtonText: 'Try Again',
-            customClass: {
-                confirmButton: 'custom-confirm-button',  // Apply custom class to the confirm button
-            },
-            didOpen: () => {
-                // Adding a CSS class for the rotating effect
-                const image = Swal.getImage();
-                image.classList.add('rotate-image'); // Add the rotation class to the image
-            }
-        }).then((result) => {
-            if (result.isConfirmed) {
-                startGame();  // Restart the game if the player clicks "Try Again"
-            }
-        });
-    }
-    
-    
-
-    // Start the game initially
-    startGame();
-</script>
+    <script src="{% static 'js/game.js' %}"></script>
 {% endblock %}
