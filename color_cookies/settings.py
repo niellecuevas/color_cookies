@@ -129,4 +129,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 ALLOWED_HOSTS = ['niellecuevas.pythonanywhere.com'] 
 STATIC_URL = '/static/'
-STATIC_ROOT = '/home/niellecuevas/color_cookies/static' 
+STATIC_ROOT = '/home/niellecuevas/color_cookies/cookie_app/static' 
