@@ -72,13 +72,24 @@ function updateScore() {
 
 function countdown() {
   let countdownValue = 3;
-  countdownModal.style.display = 'flex'; // Show countdown modal
+  
+  // Show countdown modal and add warning message
+  countdownModal.style.display = 'flex';
+  countdownModal.innerHTML = `
+    <div class="modal-content">
+      <div class="countdown-warning">Match the COLOR of the word!</div>
+      <div class="countdown-text">${countdownValue}</div>
+    </div>
+  `;
+  
   const countdownTimer = setInterval(() => {
-      countdownText.textContent = countdownValue;
+      const countdownText = countdownModal.querySelector('.countdown-text');
+      countdownText.textContent = countdownValue > 0 ? countdownValue : 'GO!';
       countdownValue--;
+      
       if (countdownValue < 0) {
           clearInterval(countdownTimer);
-          countdownModal.style.display = 'none'; // Hide countdown modal
+          countdownModal.style.display = 'none';
           gameStart();
       }
   }, 500);

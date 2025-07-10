@@ -1,15 +1,79 @@
 {% extends 'home.html' %}
 {% load static %} 
 
-{% block title %}Color Cookies{% endblock %}
+{% block title %}About Color Cookies{% endblock %}
 
 {% block content %}
 <a href="{% url 'titlescreen' %}" class="back-button">
-    <img src="{% static 'images/backgrounds/arrow.png' %}" alt="Back to Title Screen">
-  </a>
+  <img src="{% static 'images/backgrounds/arrow.png' %}" alt="Back to Title Screen">
+</a>
 
 <div class="title-screen">
-    <img src="{% static 'images/backgrounds/colorcookies.png' %}" alt="Color Cookies" class="centered-image">
-
+  <div class="header-container">
+      <img src="{% static 'images/backgrounds/colorcookies.png' %}" alt="Color Cookies" class="logo-cookies">
+  </div>
+    <div class="about-content">
+        <div class="game-description">
+            <h2>About the Game</h2>
+            <p>   Color Cookies is a Stroop effect game, themed around colorful cookies and engaging cognitive challenges.</p>
+            <p>The Stroop effect demonstrates the interference in reaction time when the brain tries to process conflicting information - like when the word "Red" is written in blue ink.</p>
+            <p>Test your mental flexibility and have fun with these delicious-looking cookie challenges!</p>
+        </div>
+        
+        <div class="developer-info">
+            <h2>About the Developer</h2>
+            <p>This game was created with passion by a solo developer who:</p>
+            <ul>
+                <li>Drew all the logos and sprites</li>
+                <li>Created all the cookie designs</li>
+                <li>Produced some of the sound effects</li>
+                <li>Developed the game mechanics</li>
+            </ul>
+            <p>A labor of love combining art, psychology, and game design!</p>
+        </div>
+    </div>
 </div>
+
+<style>
+    .about-content {
+        max-width: 800px;
+        padding: 20px;
+        border-radius: 10px;
+        color: #333;
+    }
+    
+    .game-description, .developer-info {
+        margin-bottom: 30px;
+    }
+    
+    h2 {
+        color: #8d5e3d;
+        border-bottom: 2px solid #6e4b3a;
+        padding-bottom: 5px;
+    }
+    
+    ul {
+        padding-left: 20px;
+    }
+    
+    li {
+        margin-bottom: 5px;
+    }
+
+  .logo-cookies {
+      width: 150px; /* Smaller size */
+      height: auto;
+  }
+  
+  /* For mobile responsiveness */
+  @media screen and (max-width: 768px) {
+      .logo-cookies {
+          width: 60px;
+      }
+      
+      .back-button img {
+          width: 25px;
+      }
+  }
+</style>
 {% endblock %}

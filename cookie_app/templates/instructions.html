@@ -1,15 +1,67 @@
 {% extends 'home.html' %}
-{% load static %} 
+{% load static %}
 
 {% block title %}Color Cookies{% endblock %}
 
 {% block content %}
+<link rel="stylesheet" href="{% static 'css/instructions.css' %}">
 <a href="{% url 'titlescreen' %}" class="back-button">
     <img src="{% static 'images/backgrounds/arrow.png' %}" alt="Back to Title Screen">
-  </a>
-  
-<div class="title-screen">
-    <img src="{% static 'images/backgrounds/colorcookies.png' %}" alt="Color Cookies" class="centered-image">
+</a>
 
+<div class="header-container">
+    <h1>How to Play</h1>
+</div>
+
+<div class="instruction-page">
+    <p class="subtitle">Welcome to the Cookie Color Matching Game!</p>
+
+    <section>
+        <h2>Game Objective</h2>
+        <p>Your task is to click on the cookie that matches the color displayed on the screen. Earn points by clicking correctly and avoid mistakes to keep your lives intact.</p>
+    </section>
+
+    <section>
+        <h2>Game Controls</h2>
+        <ul>
+            <li>Click on the cookies to select them.</li>
+            <li>Watch the timer closely – you have 10 seconds to make a correct match.</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>Scoring and Progression</h2>
+        <ul>
+            <li>You earn 1 point for each correct match.</li>
+            <li>Every 5 correct matches, the game becomes more challenging.</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>Lives</h2>
+        <p>You start with 5 lives. Each incorrect choice costs you a life. If you lose all lives, the game is over.</p>
+    </section>
+
+    <section>
+        <h2>Timer</h2>
+        <p>The timer counts down 10 seconds for each round. Act quickly and make the correct match before time runs out!</p>
+    </section>
+
+    <section>
+        <h2>Game Over</h2>
+        <p>If you lose all your lives, the game will end. Your score will be displayed, and you can click 'Try Again' to restart.</p>
+    </section>
+
+    <section>
+        <h2>Tips & Tricks</h2>
+        <ul>
+            <li>Pay close attention to the color of the cookies!</li>
+            <li>Try to stay calm and focus on the correct color to avoid mistakes.</li>
+        </ul>
+    </section>
+
+    <div class="footer">
+        <button id="start-game" onclick="startGame()">Start Game</button>
+    </div>
 </div>
 {% endblock %}
