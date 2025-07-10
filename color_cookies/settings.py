@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-(+3#0@roaayh6ji24xdg$rx2fcphq40j5nc3@3(&!wj6wycykm'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -127,7 +127,6 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-DEBUG = False  
 ALLOWED_HOSTS = ['niellecuevas.pythonanywhere.com'] 
 STATIC_URL = '/static/'
 STATIC_ROOT = '/home/niellecuevas/color_cookies/static' 
